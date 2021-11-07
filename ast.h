@@ -205,7 +205,7 @@ class ReturnStatement: public Statement
         {
             return RETURN_STATEMENT;
         }
-}
+};
 
 class ContinueStatement: public Statement
 {
@@ -219,7 +219,7 @@ class ContinueStatement: public Statement
         {
             return CONTINUE_STATEMENT;
         }
-}
+};
 
 class BreakStatement: public Statement
 {
@@ -233,7 +233,7 @@ class BreakStatement: public Statement
         {
             return BREAK_STATEMENT;
         }
-}
+};
 
 class ForStatement : public Statement
 {
