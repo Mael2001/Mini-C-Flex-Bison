@@ -172,7 +172,7 @@ public:
 class IfStatement : public Statement
 {
 public:
-    IfStatement(Expr* Expressions, Statement* Statements, int line)
+    IfStatement(Expr* Expressions, List<Statement>* Statements, int line)
     {
         this->Expressions = Expressions;
         this->Statements = Statements;
