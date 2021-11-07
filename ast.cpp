@@ -98,6 +98,7 @@ int BlockStatement::evaluateSemantic()
 }
 int ExpressionStatement::evaluateSemantic()
 {
+    string exprType = getTypeName(this->Expressions->getType());
     return 0;
 }
 int ForStatement::evaluateSemantic()
@@ -151,7 +152,9 @@ int GlobalDeclaration::evaluateSemantic()
 
 int Declaration::evaluateSemantic()
 {
-    
+    if (this->type != 0)
+    {
+    }
     
     return 0;
 }
@@ -160,7 +163,7 @@ void addMethodDeclaration(string id, int line, int type, ParameterList params)
 {
     if (methods[id] != 0)
     {
-        //TODO: imprimir error.
+        cout << "Error en la linea [" << line << "]";
     }
     methods[id] = new FunctionInfo();
     methods[id]->returnType = type;
@@ -177,7 +180,17 @@ int MethodDefinition::evaluateSemantic()
 
     addMethodDeclaration(this->id, this->line, this->type, this->params);
     pushContext();
-    //TODO: evaluar semantica de parámetros
+    list<Parameter *>::iterator its = this->params.begin();
+    while (its != this->params.end())
+    {
+        Parameter *params = *its;
+        if (params != NULL)
+        {
+            this->statement->evaluateSemantic();
+        }
+
+        its++;
+    }
 
     if (this->statement != NULL)
     {
