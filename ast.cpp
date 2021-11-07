@@ -1,72 +1,81 @@
 #include "ast.h"
 #include <iostream>
 
-class ContextStack{
-    public:
-        struct ContextStack* prev;
-        map<string, Type> variables;
+class ContextStack
+{
+public:
+    struct ContextStack *prev;
+    map<string, Type> variables;
 };
 
-class FunctionInfo{
-    public:
-        int returnType;
-        list<Parameter *> parameters;
+class FunctionInfo
+{
+public:
+    int returnType;
+    list<Parameter *> parameters;
 };
 
 map<string, Type> globalVariables = {};
 map<string, Type> variables;
-map<string, FunctionInfo*> methods;
-map<string, Type> resultTypes ={
+map<string, FunctionInfo *> methods;
+map<string, Type> resultTypes = {
     {"INT,INT", INT},
     {"FLOAT,FLOAT", FLOAT},
     {"INT,FLOAT", FLOAT},
     {"FLOAT,INT", FLOAT},
 };
 
-string getTypeName(Type type){
-    switch(type){
-        case INT:
-            return "INT";
-        case FLOAT:
-            return "FLOAT";
-        case VOID:
-            return "VOID";
-        case INT_ARRAY:
-            return "INT_ARRAY";
-        case FLOAT_ARRAY:
-            return "FLOAT_ARRAY";
-        case BOOL:
-            return "BOOL";
+string getTypeName(Type type)
+{
+    switch (type)
+    {
+    case INT:
+        return "INT";
+    case FLOAT:
+        return "FLOAT";
+    case VOID:
+        return "VOID";
+    case INT_ARRAY:
+        return "INT_ARRAY";
+    case FLOAT_ARRAY:
+        return "FLOAT_ARRAY";
+    case BOOL:
+        return "BOOL";
     }
 
-    cout<<"Unknown type"<<endl;
+    cout << "Unknown type" << endl;
     exit(0);
 }
 
-ContextStack * context = NULL;
+ContextStack *context = NULL;
 
-void pushContext(){
+void pushContext()
+{
     variables.clear();
-    ContextStack * c = new ContextStack();
+    ContextStack *c = new ContextStack();
     c->variables = variables;
     c->prev = context;
     context = c;
 }
 
-void popContext(){
-    if(context != NULL){
-        ContextStack * previous = context->prev;
+void popContext()
+{
+    if (context != NULL)
+    {
+        ContextStack *previous = context->prev;
         free(context);
         context = previous;
     }
 }
 
-int BlockStatement::evaluateSemantic(){
+int BlockStatement::evaluateSemantic()
+{
     list<Declaration *>::iterator itd = this->declarations.begin();
     while (itd != this->declarations.end())
     {
-        Declaration * dec = *itd;
-        if(dec != NULL){
+        Declaration *dec = *itd;
+        if (dec != NULL)
+        {
             dec->evaluateSemantic();
         }
 
@@ -76,8 +85,9 @@ int BlockStatement::evaluateSemantic(){
     list<Statement *>::iterator its = this->statements.begin();
     while (its != this->statements.end())
     {
-        Statement * stmt = *its;
-        if(stmt != NULL){
+        Statement *stmt = *its;
+        if (stmt != NULL)
+        {
             stmt->evaluateSemantic();
         }
 
@@ -86,22 +96,63 @@ int BlockStatement::evaluateSemantic(){
 
     return 0;
 }
-int ForStatement::evaluateSemantic(){
+int ExpressionStatement::evaluateSemantic()
+{
+    return 0;
+}
+int ForStatement::evaluateSemantic()
+{
+    if (LeftExpression != NULL)
+    {
+        LeftExpression->evaluateSemantic();
+    }
+    if (RightExpression != NULL)
+    {
+        RightExpression->evaluateSemantic();
+    }
+    if (Statements != NULL)
+    {
+        Statements->evaluateSemantic();
+    }
+
+    return 0;
+}
+int WhileStatement::evaluateSemantic()
+{
+    if (Statements != NULL)
+    {
+        Statements->evaluateSemantic();
+    }
+    return 0;
+}
+int IfStatement::evaluateSemantic()
+{
+    if (Statements != NULL)
+    {
+        Statements->evaluateSemantic();
+    }
+    return 0;
+}
+int GlobalDeclaration::evaluateSemantic()
+{
+    if (declaration != NULL)
+    {
+        declaration->evaluateSemantic();
+    }
     return 0;
 }
 
-int GlobalDeclaration::evaluateSemantic(){
-    //TODO: evaluar semántica.
+int Declaration::evaluateSemantic()
+{
+    
+    
     return 0;
 }
 
-int Declaration::evaluateSemantic(){
-    //TODO: evaluar semántica.
-    return 0;
-}
-
-void addMethodDeclaration(string id, int line, int type, ParameterList params){
-    if(methods[id] != 0){
+void addMethodDeclaration(string id, int line, int type, ParameterList params)
+{
+    if (methods[id] != 0)
+    {
         //TODO: imprimir error.
     }
     methods[id] = new FunctionInfo();
@@ -109,9 +160,11 @@ void addMethodDeclaration(string id, int line, int type, ParameterList params){
     methods[id]->parameters = params;
 }
 
-int MethodDefinition::evaluateSemantic(){
-    if(this->params.size() > 4){
-        cout<< "Method: "<<this->id << " can't have more than 4 parameters, line: "<< this->line<<endl;
+int MethodDefinition::evaluateSemantic()
+{
+    if (this->params.size() > 4)
+    {
+        cout << "Method: " << this->id << " can't have more than 4 parameters, line: " << this->line << endl;
         exit(0);
     }
 
@@ -119,92 +172,107 @@ int MethodDefinition::evaluateSemantic(){
     pushContext();
     //TODO: evaluar semantica de parámetros
 
-    if(this->statement !=NULL ){
+    if (this->statement != NULL)
+    {
         this->statement->evaluateSemantic();
     }
-    
+
     popContext();
 
     return 0;
 }
 
-Type IntExpr::getType(){
+Type IntExpr::getType()
+{
     return INT;
 }
 
-Type FloatExpr::getType(){
+Type FloatExpr::getType()
+{
     return FLOAT;
 }
 
-#define IMPLEMENT_BINARY_GET_TYPE(name)\
-Type name##Expr::getType(){\
-    string leftType = getTypeName(this->expr1->getType());\
-    string rightType = getTypeName(this->expr2->getType());\
-    Type resultType = resultTypes[leftType+","+rightType];\
-    if(resultType == 0){\
-        cerr<< "Error: type "<< leftType <<" can't be converted to type "<< rightType <<" line: "<<this->line<<endl;\
-        exit(0);\
-    }\
-    return resultType; \
-}\
-
-#define IMPLEMENT_BINARY_BOOLEAN_GET_TYPE(name)\
-Type name##Expr::getType(){\
-    string leftType = getTypeName(this->expr1->getType());\
-    string rightType = getTypeName(this->expr2->getType());\
-    Type resultType = resultTypes[leftType+","+rightType];\
-    if(resultType == 0){\
-        cerr<< "Error: type "<< leftType <<" can't be converted to type "<< rightType <<" line: "<<this->line<<endl;\
-        exit(0);\
-    }\
-    return BOOL; \
-}\
-
-
-Type getUnaryType(Type expressionType, int unaryOperation){
-    switch(unaryOperation){
-        case INCREMENT:
-        case DECREMENT:
-            if(expressionType == INT || expressionType == FLOAT)
-                return expressionType;
-        case NOT:
-            if(expressionType == BOOL)
-                return BOOL;
+#define IMPLEMENT_BINARY_GET_TYPE(name)                                                                                           \
+    Type name##Expr::getType()                                                                                                    \
+    {                                                                                                                             \
+        string leftType = getTypeName(this->expr1->getType());                                                                    \
+        string rightType = getTypeName(this->expr2->getType());                                                                   \
+        Type resultType = resultTypes[leftType + "," + rightType];                                                                \
+        if (resultType == 0)                                                                                                      \
+        {                                                                                                                         \
+            cerr << "Error: type " << leftType << " can't be converted to type " << rightType << " line: " << this->line << endl; \
+            exit(0);                                                                                                              \
+        }                                                                                                                         \
+        return resultType;                                                                                                        \
     }
 
-    cerr<<"Error: Invalid type"<<endl;
+#define IMPLEMENT_BINARY_BOOLEAN_GET_TYPE(name)                                                                                   \
+    Type name##Expr::getType()                                                                                                    \
+    {                                                                                                                             \
+        string leftType = getTypeName(this->expr1->getType());                                                                    \
+        string rightType = getTypeName(this->expr2->getType());                                                                   \
+        Type resultType = resultTypes[leftType + "," + rightType];                                                                \
+        if (resultType == 0)                                                                                                      \
+        {                                                                                                                         \
+            cerr << "Error: type " << leftType << " can't be converted to type " << rightType << " line: " << this->line << endl; \
+            exit(0);                                                                                                              \
+        }                                                                                                                         \
+        return BOOL;                                                                                                              \
+    }
+
+Type getUnaryType(Type expressionType, int unaryOperation)
+{
+    switch (unaryOperation)
+    {
+    case INCREMENT:
+    case DECREMENT:
+        if (expressionType == INT || expressionType == FLOAT)
+            return expressionType;
+    case NOT:
+        if (expressionType == BOOL)
+            return BOOL;
+    }
+
+    cerr << "Error: Invalid type" << endl;
     exit(0);
 }
 
-Type UnaryExpr::getType(){
+Type UnaryExpr::getType()
+{
     Type exprType = this->expr->getType();
     return getUnaryType(exprType, this->type);
 }
 
-Type ArrayExpr::getType(){
+Type ArrayExpr::getType()
+{
     return this->id->getType();
 }
 
-Type IdExpr::getType(){
+Type IdExpr::getType()
+{
     //TODO
     return INVALID;
 }
 
-Type MethodInvocationExpr::getType(){
+Type MethodInvocationExpr::getType()
+{
     //TODO
     return INVALID;
 }
 
-Type PostIncrementExpr::getType(){
+Type PostIncrementExpr::getType()
+{
     return this->expr->getType();
 }
 
-Type PostDecrementExpr::getType(){
+Type PostDecrementExpr::getType()
+{
     //TODO
     return INVALID;
 }
 
-Type StringExpr::getType(){
+Type StringExpr::getType()
+{
     //TODO
     return INVALID;
 }
