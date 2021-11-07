@@ -127,6 +127,17 @@ int WhileStatement::evaluateSemantic()
 }
 int IfStatement::evaluateSemantic()
 {
+    list<Statement *>::iterator its = this->Statements.begin();
+    while (its != this->Statements.end())
+    {
+        Statement *stmt = *its;
+        if (stmt != NULL)
+        {
+            stmt->evaluateSemantic();
+        }
+
+        its++;
+    }
     return 0;
 }
 int GlobalDeclaration::evaluateSemantic()
