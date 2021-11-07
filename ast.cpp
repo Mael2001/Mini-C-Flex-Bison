@@ -127,10 +127,6 @@ int WhileStatement::evaluateSemantic()
 }
 int IfStatement::evaluateSemantic()
 {
-    if (Statements != NULL)
-    {
-        Statements->evaluateSemantic();
-    }
     return 0;
 }
 int GlobalDeclaration::evaluateSemantic()
