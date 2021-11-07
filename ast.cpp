@@ -92,6 +92,10 @@ int GlobalDeclaration::evaluateSemantic(){
     return 0;
 }
 
+int Declaration::evaluateSemantic(){
+    //TODO: evaluar semántica.
+    return 0;
+}
 
 void addMethodDeclaration(string id, int line, int type, ParameterList params){
     if(methods[id] != 0){

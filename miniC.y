@@ -51,7 +51,7 @@
 
 %type<expr_t> assignment_expression logical_or_expression
 %type<statement_list_t> statement_list
-%type<statement_t> external_declaration method_definition block_statement statement
+%type<statement_t> external_declaration method_definition block_statement statement while_statement expression_statement if_statement for_statement jump_statement
 %type<declaration_t> declaration
 %type<declaration_list_t> declaration_list
 %type<initializer_t> initializer
