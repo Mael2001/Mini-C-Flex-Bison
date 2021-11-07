@@ -149,16 +149,21 @@ statement_list: statement_list statement { $$ = $1; $$->push_back($2); }
               | statement { $$ = new StatementList; $$->push_back($1); }
               ;
 
-if_statement: TK_IF '(' expression ')' statement
-            | TK_IF '(' expression ')' statement TK_ELSE statement
+if_statement: TK_IF '(' expression ')' statement{
+    StatementList list;
+    list.push_back($5);
+    $$ = new IfStatement($3, list, yylineno);
+}
+            | TK_IF '(' expression ')' statement TK_ELSE statement{
+                StatementList list;
+                list.push_back($5);
+                list.push_back($7);
+                $$ = new IfStatement($3, list, yylineno);
+            }
             ;
   
 for_statement: TK_FOR '(' expression_statement expression_statement expression ')' statement{
     $$ = new ForStatement($3,$4,$5,$7,yylineno);
-    delete $3;
-    delete $4;
-    delete $5;
-    delete $7;
 }
             ;
 
@@ -166,7 +171,6 @@ expression_statement: ';'
                     | expression ';'
                     {
                         $$ = new ExpressionStatement($1,yylineno);
-                        delete $1;
                     }
                     ;
 

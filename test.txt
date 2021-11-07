@@ -25,11 +25,11 @@ void main(){
     while(i < size)
     printf("%d");
     for(i=0;i<size;i++)
-    printf("%d   ",arr[i]);
+    printf("%d   ");
    
     bubble(arr,size);
    
     printf("\nAfter sorting\n");
     for(i=0;i<size;i++)
-    printf("%d   ",arr[i]);
+    printf("%d   ");
 }
