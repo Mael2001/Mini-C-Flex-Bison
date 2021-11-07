@@ -157,16 +157,12 @@ public:
 class ExpressionStatement : public Statement
 {
 public:
-    ExpressionStatement(ArgumentList Expressions, int line)
+    ExpressionStatement(Expr* Expressions, int line)
     {
         this->Expressions = Expressions;
         this->line = line;
     }
-    ExpressionStatement()
-    {
-
-    }
-    ArgumentList Expressions;
+    Expr* Expressions;
     int evaluateSemantic();
     StatementKind getKind()
     {
@@ -242,7 +238,7 @@ class BreakStatement: public Statement
 class ForStatement : public Statement
 {
 public:
-    ForStatement(ExpressionStatement LeftExpression, ExpressionStatement RightExpression, ArgumentList Expression, StatementList Statements, int line)
+    ForStatement(Statement* LeftExpression, Statement* RightExpression, Expr* Expression, Statement* Statements, int line)
     {
         this->LeftExpression = LeftExpression;
         this->RightExpression = RightExpression;
@@ -250,10 +246,11 @@ public:
         this->Statements = Statements;
         this->line = line;
     }
-    StatementList Statements;
-    ExpressionStatement LeftExpression;
-    ExpressionStatement RightExpression;
-    ArgumentList Expression;
+    
+    Statement* Statements;
+    Statement* LeftExpression;
+    Statement* RightExpression;
+    Expr *Expression;
     int evaluateSemantic();
     StatementKind getKind()
     {
