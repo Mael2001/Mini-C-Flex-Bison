@@ -172,13 +172,13 @@ public:
 class IfStatement : public Statement
 {
 public:
-    IfStatement(Expr* Expressions, List<Statement>* Statements, int line)
+    IfStatement(Expr* Expressions, list<Statement>* Statements, int line)
     {
         this->Expressions = Expressions;
         this->Statements = Statements;
         this->line = line;
     }
-    Statement* Statements;
+    list<Statement>* Statements;
     Expr* Expressions;
     int evaluateSemantic();
     StatementKind getKind()
