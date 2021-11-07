@@ -154,6 +154,55 @@ public:
         return IF_STATEMENT;
     }
 };
+
+// class PrintStatement: public Statement
+// {
+//     public:
+//         PrintStatement()
+// }
+
+class ReturnStatement: public Statement
+{
+    public:
+        ReturnStatement(int line)
+        {
+            this->line = line;
+        }
+        int evaluateSemantic();
+        StatementKind getKind()
+        {
+            return RETURN_STATEMENT;
+        }
+}
+
+class ContinueStatement: public Statement
+{
+    public:
+        ContinueStatement(int line)
+        {
+            this->line = line;
+        }
+        int evaluateSemantic();
+        StatementKind getKind()
+        {
+            return CONTINUE_STATEMENT;
+        }
+}
+
+class BreakStatement: public Statement
+{
+    public:
+        BreakStatement(int line)
+        {
+            this->line = line;
+        }
+        int evaluateSemantic();
+        StatementKind getKind()
+        {
+            return BREAK_STATEMENT;
+        }
+}
+
 class BlockStatement : public Statement
 {
 public:
