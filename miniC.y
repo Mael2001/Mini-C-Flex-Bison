@@ -152,7 +152,9 @@ if_statement: TK_IF '(' expression ')' statement
             | TK_IF '(' expression ')' statement TK_ELSE statement
             ;
   
-for_statement: TK_FOR '(' expression_statement expression_statement expression ')' statement
+for_statement: TK_FOR '(' expression_statement expression_statement expression ')' statement{
+    $$ = new ForStatement(*$3,*$4,*$5,*$6,yylineno);
+}
             ;
 
 expression_statement: ';'
