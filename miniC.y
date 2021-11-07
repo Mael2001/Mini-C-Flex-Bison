@@ -45,7 +45,7 @@
 %token<float_t>  TK_LIT_FLOAT
 %token<statement_t> TK_IF TK_ELSE
 %token<statement_t> TK_FOR TK_WHILE TK_BREAK TK_CONTINUE TK_RETURN
-%token<void_t> TK_VOID TK_INT_TYPE TK_FLOAT_TYPE
+%token<statement_t> TK_VOID TK_INT_TYPE TK_FLOAT_TYPE
 %token<statement_t> TK_PRINTF
 %token<statement_t> TK_PLUS_EQUAL TK_MINUS_EQUAL TK_PLUS_PLUS TK_MINUS_MINUS TK_NOT
 %token<boolean_t> TK_OR TK_AND
