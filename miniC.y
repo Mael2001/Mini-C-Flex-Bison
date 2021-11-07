@@ -24,7 +24,6 @@
     int int_t;
     float float_t;
     bool boolean_t;
-    void void_t;
     Expr * expr_t;
     ArgumentList * argument_list_t;
     Statement * statement_t;
