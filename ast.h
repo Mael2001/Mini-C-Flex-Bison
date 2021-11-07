@@ -19,13 +19,13 @@ typedef list<Expr *> ArgumentList;
 enum StatementKind
 {
     WHILE_STATEMENT,
-    FOR_STATEMENT,
-    IF_STATEMENT,
     EXPRESSION_STATEMENT,
+    IF_STATEMENT,
+    FOR_STATEMENT,
+    BLOCK_STATEMENT,
     RETURN_STATEMENT,
     CONTINUE_STATEMENT,
     BREAK_STATEMENT,
-    BLOCK_STATEMENT,
     PRINT_STATEMENT,
     FUNCTION_DEFINITION_STATEMENT,
     GLOBAL_DECLARATION_STATEMENT
@@ -137,6 +137,38 @@ public:
     int line;
 };
 
+class WhileStatement : public Statement
+{
+public:
+    WhileStatement(ArgumentList Expressions, StatementList Statements, int line)
+    {
+        this->Expressions = Expressions;
+        this->Statements = Statements;
+        this->line = line;
+    }
+    StatementList Statements;
+    ArgumentList Expressions;
+    int evaluateSemantic();
+    StatementKind getKind()
+    {
+        return WHILE_STATEMENT;
+    }
+};
+class ExpressionStatement : public Statement
+{
+public:
+    ExpressionStatement(ArgumentList Expressions, int line)
+    {
+        this->Expressions = Expressions;
+        this->line = line;
+    }
+    ArgumentList Expressions;
+    int evaluateSemantic();
+    StatementKind getKind()
+    {
+        return EXPRESSION_STATEMENT;
+    }
+};
 class IfStatement : public Statement
 {
 public:
@@ -154,6 +186,7 @@ public:
         return IF_STATEMENT;
     }
 };
+<<<<<<< HEAD
 
 // class PrintStatement: public Statement
 // {
@@ -203,6 +236,29 @@ class BreakStatement: public Statement
         }
 }
 
+=======
+class ForStatement : public Statement
+{
+public:
+    ForStatement(ArgumentList LeftExpression, ArgumentList RightExpression, ArgumentList Expression, StatementList Statements, int line)
+    {
+        this->LeftExpression = LeftExpression;
+        this->RightExpression = RightExpression;
+        this->Expression = Expression;
+        this->Statements = Statements;
+        this->line = line;
+    }
+    StatementList Statements;
+    ArgumentList LeftExpression;
+    ArgumentList RightExpression;
+    ArgumentList Expression;
+    int evaluateSemantic();
+    StatementKind getKind()
+    {
+        return FOR_STATEMENT;
+    }
+};
+>>>>>>> 14001e1ef9fb503134373422e15f0485b07b7b7d
 class BlockStatement : public Statement
 {
 public:
