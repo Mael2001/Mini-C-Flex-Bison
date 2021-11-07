@@ -16,7 +16,8 @@ typedef list<Parameter *> ParameterList;
 typedef list<Statement *> StatementList;
 typedef list<Expr *> ArgumentList;
 
-enum StatementKind{
+enum StatementKind
+{
     WHILE_STATEMENT,
     FOR_STATEMENT,
     IF_STATEMENT,
@@ -30,7 +31,8 @@ enum StatementKind{
     GLOBAL_DECLARATION_STATEMENT
 };
 
-enum Type{
+enum Type
+{
     INVALID,
     STRING,
     INT,
@@ -41,257 +43,316 @@ enum Type{
     BOOL
 };
 
-enum UnaryType{
+enum UnaryType
+{
     INCREMENT,
     DECREMENT,
     NOT
 };
 
-class Statement{
-    public:
-        int line;
-        virtual int evaluateSemantic() = 0;
-        virtual StatementKind getKind() = 0;
+class Statement
+{
+public:
+    int line;
+    virtual int evaluateSemantic() = 0;
+    virtual StatementKind getKind() = 0;
 };
 
-class Expr{
-    public:
-        int line;
-        virtual Type getType() = 0;
+class Expr
+{
+public:
+    int line;
+    virtual Type getType() = 0;
 };
 
-class Initializer{
-    public:
-        Initializer(InitializerElementList expressions, int line){
-            this->expressions = expressions;
-            this->line = line;
-        }
-        InitializerElementList expressions;
-        int line;
+class Initializer
+{
+public:
+    Initializer(InitializerElementList expressions, int line)
+    {
+        this->expressions = expressions;
+        this->line = line;
+    }
+    InitializerElementList expressions;
+    int line;
 };
 
-class Declarator{
-    public:
-        Declarator(string id, Expr* arrayDeclaration, bool isArray, int line){
-            this->id = id;
-            this->isArray = isArray;
-            this->line = line;
-            this->arrayDeclaration = arrayDeclaration;
-        }
-        string id;
-        bool isArray;
-        int line;
-        Expr * arrayDeclaration;
+class Declarator
+{
+public:
+    Declarator(string id, Expr *arrayDeclaration, bool isArray, int line)
+    {
+        this->id = id;
+        this->isArray = isArray;
+        this->line = line;
+        this->arrayDeclaration = arrayDeclaration;
+    }
+    string id;
+    bool isArray;
+    int line;
+    Expr *arrayDeclaration;
 };
 
-class InitDeclarator{
-    public:
-        InitDeclarator(Declarator * declarator, Initializer * initializer, int line){
-            this->declarator = declarator;
-            this->initializer = initializer;
-            this->line = line;
-        }
-        Declarator * declarator;
-        Initializer * initializer;
-        int line;
+class InitDeclarator
+{
+public:
+    InitDeclarator(Declarator *declarator, Initializer *initializer, int line)
+    {
+        this->declarator = declarator;
+        this->initializer = initializer;
+        this->line = line;
+    }
+    Declarator *declarator;
+    Initializer *initializer;
+    int line;
 };
 
-class Declaration{
-    public:
-        Declaration(int type, InitDeclaratorList declarations, int line){
-            this->type = type;
-            this->declarations = declarations;
-            this->line = line;
-        }
-        int type;
-        InitDeclaratorList declarations;
-        int line;
-        int evaluateSemantic();
+class Declaration
+{
+public:
+    Declaration(int type, InitDeclaratorList declarations, int line)
+    {
+        this->type = type;
+        this->declarations = declarations;
+        this->line = line;
+    }
+    int type;
+    InitDeclaratorList declarations;
+    int line;
+    int evaluateSemantic();
 };
 
-class Parameter{
-    public:
-        Parameter(int type, Declarator * declarator, bool isArray, int line){
-            this->type = type;
-            this->declarator = declarator;
-            this->line = line;
-        }
-        int type;
-        Declarator* declarator;
-        bool isArray;
-        int line;
+class Parameter
+{
+public:
+    Parameter(int type, Declarator *declarator, bool isArray, int line)
+    {
+        this->type = type;
+        this->declarator = declarator;
+        this->line = line;
+    }
+    int type;
+    Declarator *declarator;
+    bool isArray;
+    int line;
 };
 
-class BlockStatement : public Statement{
-    public:
-        BlockStatement(StatementList statements, DeclarationList declarations, int line){
-            this->statements = statements;
-            this->declarations = declarations;
-            this->line = line;
-        }
-        StatementList statements;
-        DeclarationList declarations;
-        int line;
-        int evaluateSemantic();
-        StatementKind getKind(){
-            return BLOCK_STATEMENT;
-        }
+class IfStatement : public Statement
+{
+public:
+    IfStatement(ArgumentList Expressions, StatementList Statements, int line)
+    {
+        this->Expressions = Expressions;
+        this->Statements = Statements;
+        this->line = line;
+    }
+    StatementList Statements;
+    ArgumentList Expressions;
+    int evaluateSemantic();
+    StatementKind getKind()
+    {
+        return IF_STATEMENT;
+    }
+};
+class BlockStatement : public Statement
+{
+public:
+    BlockStatement(StatementList statements, DeclarationList declarations, int line)
+    {
+        this->statements = statements;
+        this->declarations = declarations;
+        this->line = line;
+    }
+    StatementList statements;
+    DeclarationList declarations;
+    int line;
+    int evaluateSemantic();
+    StatementKind getKind()
+    {
+        return BLOCK_STATEMENT;
+    }
 };
 
-class GlobalDeclaration : public Statement {
-    public:
-        GlobalDeclaration(Declaration * declaration){
-            this->declaration = declaration;
-        }
-        Declaration * declaration;
-        int evaluateSemantic();
-        StatementKind getKind(){
-            return GLOBAL_DECLARATION_STATEMENT;
-        }
+class GlobalDeclaration : public Statement
+{
+public:
+    GlobalDeclaration(Declaration *declaration)
+    {
+        this->declaration = declaration;
+    }
+    Declaration *declaration;
+    int evaluateSemantic();
+    StatementKind getKind()
+    {
+        return GLOBAL_DECLARATION_STATEMENT;
+    }
 };
 
-class MethodDefinition : public Statement{
-    public:
-        MethodDefinition(int type, string id, ParameterList params, Statement * statement, int line){
-            this->type = type;
-            this->id = id;
-            this->params = params;
-            this->statement = statement;
-            this->line = line;
-        }
+class MethodDefinition : public Statement
+{
+public:
+    MethodDefinition(int type, string id, ParameterList params, Statement *statement, int line)
+    {
+        this->type = type;
+        this->id = id;
+        this->params = params;
+        this->statement = statement;
+        this->line = line;
+    }
 
-        int type;
-        string id;
-        ParameterList params;
-        Statement * statement;
-        int line;
-        int evaluateSemantic();
-        StatementKind getKind(){
-            return FUNCTION_DEFINITION_STATEMENT;
-        }
+    int type;
+    string id;
+    ParameterList params;
+    Statement *statement;
+    int line;
+    int evaluateSemantic();
+    StatementKind getKind()
+    {
+        return FUNCTION_DEFINITION_STATEMENT;
+    }
 };
 
-class IntExpr : public Expr{
-    public:
-        IntExpr(int value, int line){
-            this->value = value;
-            this->line = line;
-        }
-        int value;
-        Type getType();
+class IntExpr : public Expr
+{
+public:
+    IntExpr(int value, int line)
+    {
+        this->value = value;
+        this->line = line;
+    }
+    int value;
+    Type getType();
 };
 
-class FloatExpr : public Expr{
-    public:
-        FloatExpr(float value, int line){
-            this->value = value;
-            this->line = line;
-        }
-        float value;
-        Type getType();
+class FloatExpr : public Expr
+{
+public:
+    FloatExpr(float value, int line)
+    {
+        this->value = value;
+        this->line = line;
+    }
+    float value;
+    Type getType();
 };
 
-class BinaryExpr : public Expr{
-    public:
-        BinaryExpr(Expr * expr1, Expr *expr2, int line){
-            this->expr1 = expr1;
-            this->expr2 = expr2;
-            this->line = line;
-        }
-        Expr * expr1;
-        Expr *expr2;
-        int line;
+class BinaryExpr : public Expr
+{
+public:
+    BinaryExpr(Expr *expr1, Expr *expr2, int line)
+    {
+        this->expr1 = expr1;
+        this->expr2 = expr2;
+        this->line = line;
+    }
+    Expr *expr1;
+    Expr *expr2;
+    int line;
 };
 
-#define IMPLEMENT_BINARY_EXPR(name) \
-class name##Expr : public BinaryExpr{\
-    public: \
-        name##Expr(Expr * expr1, Expr *expr2, int line) : BinaryExpr(expr1, expr2, line){}\
-        Type getType(); \
+#define IMPLEMENT_BINARY_EXPR(name)                                                        \
+    class name##Expr : public BinaryExpr                                                   \
+    {                                                                                      \
+    public:                                                                                \
+        name##Expr(Expr *expr1, Expr *expr2, int line) : BinaryExpr(expr1, expr2, line) {} \
+        Type getType();                                                                    \
+    };
+
+class UnaryExpr : public Expr
+{
+public:
+    UnaryExpr(int type, Expr *expr, int line)
+    {
+        this->type = type;
+        this->expr = expr;
+        this->line = line;
+    }
+    int type;
+    Expr *expr;
+    int line;
+    Type getType();
 };
 
-class UnaryExpr : public Expr{
-    public:
-        UnaryExpr(int type, Expr* expr, int line){
-            this->type = type;
-            this->expr = expr;
-            this->line = line;
-        }
-        int type;
-        Expr* expr;
-        int line;
-        Type getType();
+class PostIncrementExpr : public Expr
+{
+public:
+    PostIncrementExpr(Expr *expr, int line)
+    {
+        this->expr = expr;
+        this->line = line;
+    }
+    Expr *expr;
+    int line;
+    Type getType();
 };
 
-class PostIncrementExpr: public Expr{
-    public:
-        PostIncrementExpr(Expr * expr, int line){
-            this->expr = expr;
-            this->line = line;
-        }
-        Expr * expr;
-        int line;
-        Type getType();
+class PostDecrementExpr : public Expr
+{
+public:
+    PostDecrementExpr(Expr *expr, int line)
+    {
+        this->expr = expr;
+        this->line = line;
+    }
+    Expr *expr;
+    int line;
+    Type getType();
 };
 
-class PostDecrementExpr: public Expr{
-    public:
-        PostDecrementExpr(Expr * expr, int line){
-            this->expr = expr;
-            this->line = line;
-        }
-        Expr * expr;
-        int line;
-        Type getType();
+class IdExpr : public Expr
+{
+public:
+    IdExpr(string id, int line)
+    {
+        this->id = id;
+        this->line = line;
+    }
+    string id;
+    int line;
+    Type getType();
 };
 
-class IdExpr : public Expr{
-    public:
-        IdExpr(string id, int line){
-            this->id = id;
-            this->line = line;
-        }
-        string id;
-        int line;
-        Type getType();
+class ArrayExpr : public Expr
+{
+public:
+    ArrayExpr(IdExpr *id, Expr *expr, int line)
+    {
+        this->id = id;
+        this->expr = expr;
+        this->line = line;
+    }
+    IdExpr *id;
+    Expr *expr;
+    int line;
+    Type getType();
 };
 
-class ArrayExpr : public Expr{
-    public:
-        ArrayExpr(IdExpr * id, Expr * expr, int line){
-            this->id = id;
-            this->expr = expr;
-            this->line = line;
-        }
-        IdExpr * id;
-        Expr * expr;
-        int line;
-        Type getType();
+class MethodInvocationExpr : public Expr
+{
+public:
+    MethodInvocationExpr(IdExpr *id, ArgumentList args, int line)
+    {
+        this->id = id;
+        this->args = args;
+        this->line = line;
+    }
+    IdExpr *id;
+    ArgumentList args;
+    int line;
+    Type getType();
 };
 
-class MethodInvocationExpr : public Expr{
-    public:
-        MethodInvocationExpr(IdExpr * id, ArgumentList args, int line){
-            this->id = id;
-            this->args = args;
-            this->line = line;
-        }
-        IdExpr * id;
-        ArgumentList args;
-        int line;
-        Type getType();
-
-};
-
-class StringExpr : public Expr{
-    public:
-        StringExpr(string value, int line){
-            this->value = value;
-            this->line = line;
-        }
-        string value;
-        int line;
-        Type getType();
+class StringExpr : public Expr
+{
+public:
+    StringExpr(string value, int line)
+    {
+        this->value = value;
+        this->line = line;
+    }
+    string value;
+    int line;
+    Type getType();
 };
 
 IMPLEMENT_BINARY_EXPR(Add);
