@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.7.5.  */
+/* A Bison parser, made by GNU Bison 3.5.1.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2021 Free Software Foundation,
+   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2020 Free Software Foundation,
    Inc.
 
    This program is free software: you can redistribute it and/or modify
@@ -31,9 +31,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-/* DO NOT RELY ON FEATURES THAT ARE NOT DOCUMENTED in the manual,
-   especially those whose name start with YY_ or yy_.  They are
-   private implementation details that can be changed or removed.  */
+/* Undocumented macros, especially those whose name start with YY_,
+   are private implementation details.  Do not rely on them.  */
 
 #ifndef YY_YY_TOKENS_H_INCLUDED
 # define YY_YY_TOKENS_H_INCLUDED
@@ -49,45 +48,40 @@ extern int yydebug;
 
     #include "ast.h"
 
-#line 53 "tokens.h"
+#line 52 "tokens.h"
 
-/* Token kinds.  */
+/* Token type.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
   enum yytokentype
   {
-    YYEMPTY = -2,
-    YYEOF = 0,                     /* "end of file"  */
-    YYerror = 256,                 /* error  */
-    YYUNDEF = 257,                 /* "invalid token"  */
-    TK_LIT_STRING = 258,           /* TK_LIT_STRING  */
-    TK_ID = 259,                   /* TK_ID  */
-    TK_LIT_INT = 260,              /* TK_LIT_INT  */
-    TK_LIT_FLOAT = 261,            /* TK_LIT_FLOAT  */
-    TK_IF = 262,                   /* TK_IF  */
-    TK_ELSE = 263,                 /* TK_ELSE  */
-    TK_FOR = 264,                  /* TK_FOR  */
-    TK_WHILE = 265,                /* TK_WHILE  */
-    TK_BREAK = 266,                /* TK_BREAK  */
-    TK_CONTINUE = 267,             /* TK_CONTINUE  */
-    TK_RETURN = 268,               /* TK_RETURN  */
-    TK_VOID = 269,                 /* TK_VOID  */
-    TK_INT_TYPE = 270,             /* TK_INT_TYPE  */
-    TK_FLOAT_TYPE = 271,           /* TK_FLOAT_TYPE  */
-    TK_PRINTF = 272,               /* TK_PRINTF  */
-    TK_PLUS_EQUAL = 273,           /* TK_PLUS_EQUAL  */
-    TK_MINUS_EQUAL = 274,          /* TK_MINUS_EQUAL  */
-    TK_PLUS_PLUS = 275,            /* TK_PLUS_PLUS  */
-    TK_MINUS_MINUS = 276,          /* TK_MINUS_MINUS  */
-    TK_NOT = 277,                  /* TK_NOT  */
-    TK_OR = 278,                   /* TK_OR  */
-    TK_AND = 279,                  /* TK_AND  */
-    TK_EQUAL = 280,                /* TK_EQUAL  */
-    TK_NOT_EQUAL = 281,            /* TK_NOT_EQUAL  */
-    TK_GREATER_OR_EQUAL = 282,     /* TK_GREATER_OR_EQUAL  */
-    TK_LESS_OR_EQUAL = 283         /* TK_LESS_OR_EQUAL  */
+    TK_LIT_STRING = 258,
+    TK_ID = 259,
+    TK_LIT_INT = 260,
+    TK_LIT_FLOAT = 261,
+    TK_IF = 262,
+    TK_ELSE = 263,
+    TK_FOR = 264,
+    TK_WHILE = 265,
+    TK_BREAK = 266,
+    TK_CONTINUE = 267,
+    TK_RETURN = 268,
+    TK_VOID = 269,
+    TK_INT_TYPE = 270,
+    TK_FLOAT_TYPE = 271,
+    TK_PRINTF = 272,
+    TK_PLUS_EQUAL = 273,
+    TK_MINUS_EQUAL = 274,
+    TK_PLUS_PLUS = 275,
+    TK_MINUS_MINUS = 276,
+    TK_NOT = 277,
+    TK_OR = 278,
+    TK_AND = 279,
+    TK_EQUAL = 280,
+    TK_NOT_EQUAL = 281,
+    TK_GREATER_OR_EQUAL = 282,
+    TK_LESS_OR_EQUAL = 283
   };
-  typedef enum yytokentype yytoken_kind_t;
 #endif
 
 /* Value type.  */
@@ -113,7 +107,7 @@ union YYSTYPE
     Parameter * parameter_t;
     ParameterList * parameter_list_t;
 
-#line 117 "tokens.h"
+#line 111 "tokens.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

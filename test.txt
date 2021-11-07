@@ -22,6 +22,8 @@ void main(){
     arr[7] = 0;
     
     printf("\nBefore sorting\n");
+    while(i < size)
+    printf("%d");
     for(i=0;i<size;i++)
     printf("%d   ",arr[i]);
    

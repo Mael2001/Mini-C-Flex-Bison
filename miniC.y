@@ -52,6 +52,7 @@
 %type<expr_t> assignment_expression logical_or_expression
 %type<statement_list_t> statement_list
 %type<statement_t> external_declaration method_definition block_statement statement while_statement expression_statement if_statement for_statement jump_statement
+%type<statement_t> continue_statement break_statement return_statement
 %type<declaration_t> declaration
 %type<declaration_list_t> declaration_list
 %type<initializer_t> initializer
@@ -152,17 +153,32 @@ if_statement: TK_IF '(' expression ')' statement
             | TK_IF '(' expression ')' statement TK_ELSE statement
             ;
   
-for_statement: TK_FOR '(' expression_statement expression_statement expression ')' statement{
-    $$ = new ForStatement(*$3,*$4,*$5,*$7,yylineno);
-}
+for_statement: TK_FOR '(' expression_statement expression_statement expression ')' statement
             ;
 
 expression_statement: ';'
                     | expression ';'
                     ;
 
-while_statement: TK_WHILE '(' expression ')' statement
+while_statement: TK_WHILE '(' expression ')' statement{ 
+    $$ = new WhileStatement($3, $5, yylineno);
+}
                ;
+
+continue_statement: TK_CONTINUE{
+    $$ = new ContinueStatement(yylineno);
+}
+                ;
+
+break_statement: TK_BREAK{
+    $$ = new BreakStatement(yylineno);
+}
+                ;
+
+return_statement: TK_RETURN{
+    $$ = new ReturnStatement(yylineno);
+}
+                ;
 
 jump_statement: TK_RETURN ';'
               | TK_CONTINUE ';'
@@ -256,6 +272,7 @@ assignment_operator: '=' { $$ = EQUAL; }
                    ;
 
 expression: assignment_expression {$$ = $1;}
+          
           ;
 
 constant: TK_LIT_INT { $$ = new IntExpr($1 , yylineno);}
