@@ -140,14 +140,14 @@ public:
 class WhileStatement : public Statement
 {
 public:
-    WhileStatement(Expr* Expressions, Statement* Statements, int line)
+    WhileStatement(Expr *Expressions, Statement *Statements, int line)
     {
         this->Expressions = Expressions;
         this->Statements = Statements;
         this->line = line;
     }
-    Statement* Statements;
-    Expr* Expressions;
+    Statement *Statements;
+    Expr *Expressions;
     int evaluateSemantic();
     StatementKind getKind()
     {
@@ -157,12 +157,12 @@ public:
 class ExpressionStatement : public Statement
 {
 public:
-    ExpressionStatement(Expr* Expressions, int line)
+    ExpressionStatement(Expr *Expressions, int line)
     {
         this->Expressions = Expressions;
         this->line = line;
     }
-    Expr* Expressions;
+    Expr *Expressions;
     int evaluateSemantic();
     StatementKind getKind()
     {
@@ -172,14 +172,14 @@ public:
 class IfStatement : public Statement
 {
 public:
-    IfStatement(Expr* Expressions, StatementList Statements, int line)
+    IfStatement(Expr *Expressions, StatementList Statements, int line)
     {
         this->Expressions = Expressions;
         this->Statements = Statements;
         this->line = line;
     }
     StatementList Statements;
-    Expr* Expressions;
+    Expr *Expressions;
     int evaluateSemantic();
     StatementKind getKind()
     {
@@ -187,58 +187,70 @@ public:
     }
 };
 
-// class PrintStatement: public Statement
-// {
-//     public:
-//         PrintStatement()
-// }
-
-class ReturnStatement: public Statement
+class PrintStatement : public Statement
 {
-    public:
-        ReturnStatement(int line)
-        {
-            this->line = line;
-        }
-        int evaluateSemantic();
-        StatementKind getKind()
-        {
-            return RETURN_STATEMENT;
-        }
+public:
+    PrintStatement(Expr* expr, int line)
+    {
+        this->expr = expr;
+        this->line = line;
+    }
+    Expr* expr;
+    int evaluateSemantic();
+    StatementKind getKind()
+    {
+        return PRINT_STATEMENT;
+    }
 };
 
-class ContinueStatement: public Statement
+class ReturnStatement : public Statement
 {
-    public:
-        ContinueStatement(int line)
-        {
-            this->line = line;
-        }
-        int evaluateSemantic();
-        StatementKind getKind()
-        {
-            return CONTINUE_STATEMENT;
-        }
+public:
+    ReturnStatement(Expr* expr,int line)
+    {
+        this->expr = expr;
+        this->line = line;
+    }
+    Expr* expr;
+    int evaluateSemantic();
+    StatementKind getKind()
+    {
+        return RETURN_STATEMENT;
+    }
 };
 
-class BreakStatement: public Statement
+class ContinueStatement : public Statement
 {
-    public:
-        BreakStatement(int line)
-        {
-            this->line = line;
-        }
-        int evaluateSemantic();
-        StatementKind getKind()
-        {
-            return BREAK_STATEMENT;
-        }
+public:
+    ContinueStatement(int line)
+    {
+        this->line = line;
+    }
+    int evaluateSemantic();
+    StatementKind getKind()
+    {
+        return CONTINUE_STATEMENT;
+    }
+};
+
+class BreakStatement : public Statement
+{
+public:
+    BreakStatement(int line)
+    {
+        this->line = line;
+    }
+    int evaluateSemantic();
+    StatementKind getKind()
+    {
+        return BREAK_STATEMENT;
+    }
 };
 
 class ForStatement : public Statement
 {
 public:
-    ForStatement(Statement* LeftExpression, Statement* RightExpression, Expr* Expression, Statement* Statements, int line)
+    ForStatement(Statement *LeftExpression, Statement *RightExpression, Expr *Expression, Statement *Statements, int line)
     {
         this->LeftExpression = LeftExpression;
         this->RightExpression = RightExpression;
@@ -246,10 +258,10 @@ public:
         this->Statements = Statements;
         this->line = line;
     }
-    
-    Statement* Statements;
-    Statement* LeftExpression;
-    Statement* RightExpression;
+
+    Statement *Statements;
+    Statement *LeftExpression;
+    Statement *RightExpression;
     Expr *Expression;
     int evaluateSemantic();
     StatementKind getKind()

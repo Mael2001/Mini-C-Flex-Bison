@@ -98,7 +98,10 @@ int BlockStatement::evaluateSemantic()
 }
 int ExpressionStatement::evaluateSemantic()
 {
-    string exprType = getTypeName(this->Expressions->getType());
+    if (this->Expressions != NULL)
+    {
+        string exprType = getTypeName(this->Expressions->getType());
+    }
     return 0;
 }
 int ForStatement::evaluateSemantic()
@@ -116,6 +119,30 @@ int ForStatement::evaluateSemantic()
         Statements->evaluateSemantic();
     }
 
+    return 0;
+}
+int PrintStatement::evaluateSemantic()
+{
+    if (this->expr != NULL)
+    {
+        string exprType = getTypeName(this->expr->getType());
+    }
+    return 0;
+}
+int ReturnStatement::evaluateSemantic()
+{
+    if (this->expr != NULL)
+    {
+        string exprType = getTypeName(this->expr->getType());
+    }
+    return 0;
+}
+int ContinueStatement::evaluateSemantic()
+{
+    return 0;
+}
+int BreakStatement::evaluateSemantic()
+{
     return 0;
 }
 int WhileStatement::evaluateSemantic()
@@ -155,7 +182,7 @@ int Declaration::evaluateSemantic()
     if (this->type != 0)
     {
     }
-    
+
     return 0;
 }
 

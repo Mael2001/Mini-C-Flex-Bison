@@ -51,8 +51,7 @@
 
 %type<expr_t> assignment_expression logical_or_expression
 %type<statement_list_t> statement_list
-%type<statement_t> external_declaration method_definition block_statement statement while_statement expression_statement if_statement for_statement jump_statement
-%type<statement_t> continue_statement break_statement return_statement
+%type<statement_t> external_declaration method_definition block_statement statement while_statement expression_statement if_statement for_statement jump_statement print_statement
 %type<declaration_t> declaration
 %type<declaration_list_t> declaration_list
 %type<initializer_t> initializer
@@ -142,9 +141,13 @@ statement: while_statement {$$ = $1;}
         | for_statement {$$ = $1;}
         | block_statement {$$ = $1;}
         | jump_statement {$$ = $1;}
-        | TK_PRINTF expression ';'
+        | print_statement {$$ =$1;}
         ;
-
+print_statement: TK_PRINTF expression ';'
+{
+    $$ = new PrintStatement($2,yylineno);
+}
+                ;
 statement_list: statement_list statement { $$ = $1; $$->push_back($2); }
               | statement { $$ = new StatementList; $$->push_back($1); }
               ;
@@ -168,6 +171,9 @@ for_statement: TK_FOR '(' expression_statement expression_statement expression '
             ;
 
 expression_statement: ';'
+                    {
+                        $$ = new ExpressionStatement(NULL,yylineno);
+                    }
                     | expression ';'
                     {
                         $$ = new ExpressionStatement($1,yylineno);
@@ -179,25 +185,10 @@ while_statement: TK_WHILE '(' expression ')' statement{
 }
                ;
 
-continue_statement: TK_CONTINUE{
-    $$ = new ContinueStatement(yylineno);
-}
-                ;
-
-break_statement: TK_BREAK{
-    $$ = new BreakStatement(yylineno);
-}
-                ;
-
-return_statement: TK_RETURN{
-    $$ = new ReturnStatement(yylineno);
-}
-                ;
-
-jump_statement: TK_RETURN ';' {$$ = $1;}
-              | TK_CONTINUE ';'{$$ = $1;}
-              | TK_BREAK ';'{$$ = $1;}
-              | TK_RETURN expression ';'{$$ = $1;}
+jump_statement: TK_RETURN ';' {$$ = new ReturnStatement(NULL,yylineno);}
+              | TK_CONTINUE ';'{$$ = new ContinueStatement(yylineno);}
+              | TK_BREAK ';'{$$ = new BreakStatement(yylineno);}
+              | TK_RETURN expression ';'{$$ = new ReturnStatement($2,yylineno);}
               ;
 
 block_statement: '{' statement_list '}' { 
