@@ -23,7 +23,6 @@
     const char * string_t;
     int int_t;
     float float_t;
-    bool boolean_t;
     Expr * expr_t;
     ArgumentList * argument_list_t;
     Statement * statement_t;
@@ -47,8 +46,8 @@
 %token<statement_t> TK_VOID TK_INT_TYPE TK_FLOAT_TYPE
 %token<statement_t> TK_PRINTF
 %token<statement_t> TK_PLUS_EQUAL TK_MINUS_EQUAL TK_PLUS_PLUS TK_MINUS_MINUS TK_NOT
-%token<boolean_t> TK_OR TK_AND
-%token<boolean_t> TK_EQUAL TK_NOT_EQUAL TK_GREATER_OR_EQUAL TK_LESS_OR_EQUAL
+%token<expr_t> TK_OR TK_AND
+%token<expr_t> TK_EQUAL TK_NOT_EQUAL TK_GREATER_OR_EQUAL TK_LESS_OR_EQUAL
 
 %type<expr_t> assignment_expression logical_or_expression
 %type<statement_list_t> statement_list
