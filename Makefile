@@ -34,3 +34,6 @@ push:
 	git add .
 	git commit -m "Revision V${REV}.0"
 	git push origin master
+pull:
+	git config pull.rebase false
+	git pull origin master
