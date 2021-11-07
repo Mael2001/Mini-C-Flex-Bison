@@ -86,6 +86,9 @@ int BlockStatement::evaluateSemantic(){
 
     return 0;
 }
+int ForStatement::evaluateSemantic(){
+    return 0;
+}
 
 int GlobalDeclaration::evaluateSemantic(){
     //TODO: evaluar semántica.
