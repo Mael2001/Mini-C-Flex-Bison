@@ -186,7 +186,6 @@ public:
         return IF_STATEMENT;
     }
 };
-<<<<<<< HEAD
 
 // class PrintStatement: public Statement
 // {
@@ -236,7 +235,6 @@ class BreakStatement: public Statement
         }
 }
 
-=======
 class ForStatement : public Statement
 {
 public:
@@ -258,7 +256,6 @@ public:
         return FOR_STATEMENT;
     }
 };
->>>>>>> 14001e1ef9fb503134373422e15f0485b07b7b7d
 class BlockStatement : public Statement
 {
 public:
