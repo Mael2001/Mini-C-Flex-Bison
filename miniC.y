@@ -153,11 +153,18 @@ if_statement: TK_IF '(' expression ')' statement
             | TK_IF '(' expression ')' statement TK_ELSE statement
             ;
   
-for_statement: TK_FOR '(' expression_statement expression_statement expression ')' statement
+for_statement: TK_FOR '(' expression_statement expression_statement expression ')' statement{
+    $$ = new ForStatement($3,$4,$5,$7,yylineno);
+    delete $3;
+}
             ;
 
 expression_statement: ';'
                     | expression ';'
+                    {
+                        $$ = new ExpressionStatement($1,yylineno);
+                        delete $1;
+                    }
                     ;
 
 while_statement: TK_WHILE '(' expression ')' statement{ 

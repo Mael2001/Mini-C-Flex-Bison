@@ -140,14 +140,14 @@ public:
 class WhileStatement : public Statement
 {
 public:
-    WhileStatement(ArgumentList Expressions, StatementList Statements, int line)
+    WhileStatement(Expr* Expressions, Statement* Statements, int line)
     {
         this->Expressions = Expressions;
         this->Statements = Statements;
         this->line = line;
     }
-    StatementList Statements;
-    ArgumentList Expressions;
+    Statement* Statements;
+    Expr* Expressions;
     int evaluateSemantic();
     StatementKind getKind()
     {
