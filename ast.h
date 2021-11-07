@@ -162,6 +162,10 @@ public:
         this->Expressions = Expressions;
         this->line = line;
     }
+    ExpressionStatement()
+    {
+
+    }
     ArgumentList Expressions;
     int evaluateSemantic();
     StatementKind getKind()
@@ -238,7 +242,7 @@ class BreakStatement: public Statement
 class ForStatement : public Statement
 {
 public:
-    ForStatement(ArgumentList LeftExpression, ArgumentList RightExpression, ArgumentList Expression, StatementList Statements, int line)
+    ForStatement(ExpressionStatement LeftExpression, ExpressionStatement RightExpression, ArgumentList Expression, StatementList Statements, int line)
     {
         this->LeftExpression = LeftExpression;
         this->RightExpression = RightExpression;
@@ -247,8 +251,8 @@ public:
         this->line = line;
     }
     StatementList Statements;
-    ArgumentList LeftExpression;
-    ArgumentList RightExpression;
+    ExpressionStatement LeftExpression;
+    ExpressionStatement RightExpression;
     ArgumentList Expression;
     int evaluateSemantic();
     StatementKind getKind()
