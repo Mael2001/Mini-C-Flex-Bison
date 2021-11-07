@@ -153,20 +153,17 @@ if_statement: TK_IF '(' expression ')' statement{
     StatementList list;
     list.push_back($5);
     $$ = new IfStatement($3, list, yylineno);
-    delete $3,$5;
 }
             | TK_IF '(' expression ')' statement TK_ELSE statement{
                 StatementList list;
                 list.push_back($5);
                 list.push_back($7);
                 $$ = new IfStatement($3, list, yylineno);
-                delete $3,$5,$7;
             }
             ;
   
 for_statement: TK_FOR '(' expression_statement expression_statement expression ')' statement{
     $$ = new ForStatement($3,$4,$5,$7,yylineno);
-    delete $3,$4,$5,$7;
 }
             ;
 
@@ -174,7 +171,6 @@ expression_statement: ';'
                     | expression ';'
                     {
                         $$ = new ExpressionStatement($1,yylineno);
-                        delete $1;
                     }
                     ;
 
